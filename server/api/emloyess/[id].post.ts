@@ -13,7 +13,7 @@ export default defineEventHandler( async (event) => {
         })
     }
 
-    console.log(id);
+
     const instance = employees.find(item => item.id === Number(id));
     if(!instance) {
         throw createError({
@@ -22,10 +22,7 @@ export default defineEventHandler( async (event) => {
         });
     }
 
-        
         instance.email = body.email;
-        
-        console.log(employees);
         setResponseStatus(event, 201);
         return instance;
     
