@@ -61,18 +61,14 @@ const router = useRouter();
 const route = useRoute();
 const employees = ref<Employee[]>([]);
 const page = ref(route.query.page);
-const length = ref(1);
+const length = ref(0);
 onMounted(async () => {
-    if(!route.query.page) {
+    if(!route.query.page || Number(route.query.page) > Math.ceil(length.value/10)) {
         router.push({query: { page: 1 }});
         page.value = route.query.page;
         employees.value = await getEmployees('1');
     }
-})
-
-
-
-
+});
 
 
 employees.value = await getEmployees(page.value);
@@ -96,19 +92,19 @@ function decreasePage() {
         return;
     }
     router.push({query: {page: Number(page.value) - 1}});
-}
+};
 
 function increasePage() {
     if(Number(page.value) === Math.ceil(length.value/10)) {
         return;
     }
     router.push({query: { page: Number(page.value) + 1 }});
-}
+};
 
 onBeforeRouteUpdate(async (to, from) => {
     page.value = to.query.page;
     employees.value = await getEmployees(page.value);
 
-})
+});
 
 </script>
